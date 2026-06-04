@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Order</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header class="nav">
+    <h1>🛍️ Simple E-commerce</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <main id="order-main">
+    <h2>Order Status</h2>
+    <div id="status"></div>
+  </main>
+
+  <script>
+    function q(s){ return document.querySelector(s); }
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const params = new URLSearchParams(location.search);
+      const success = params.get("success");
+      const orderId = params.get("orderId");
+      const status = q("#status");
+      if (success) {
+        status.innerHTML = "<p>Order placed! ID: " + orderId + "</p><p>Thank you for your purchase.</p>";
+      } else {
+        status.innerHTML = "<p>No recent order found.</p>";
+      }
+      // show badge
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const el = document.getElementById("cart-count");
+      if (el) el.textContent = cart.reduce((s,it)=>s + (it.quantity||1),0);
+    });
+  </script>
+</body>
+</html>
